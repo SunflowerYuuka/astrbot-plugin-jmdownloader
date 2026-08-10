@@ -1,0 +1,15 @@
+name: jmdownloader
+display_name: JM PDF 下载器
+short_desc: 使用 /jm <ID> 下载 JMComic 漫画并发送 PDF。
+desc: 精确处理 /jm <数字ID> 命令，通过 jmcomic 下载图片、合成 PDF，并以 QQ 文件消息发送。
+help: 发送 /jm 123456；也支持 /jm JM123456。下载完成后机器人会直接发送 PDF 文件。
+version: 1.0.2
+author: CLRedfield
+astrbot_version: ">=4.27.1,<5"
+support_platforms:
+  - aiocqhttp
+tags:
+  - 漫画
+  - 下载
+  - PDF
+  - QQ
