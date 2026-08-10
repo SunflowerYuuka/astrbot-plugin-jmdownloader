@@ -2,6 +2,9 @@
 
 一个用于 [AstrBot](https://github.com/AstrBotDevs/AstrBot) 的 JMComic PDF 下载插件。发送 `/jm <ID>` 后，插件会下载漫画图片、合成有效 PDF，并通过 NapCat/OneBot 作为真正的 QQ 群文件或私聊文件上传。
 
+> [!IMPORTANT]
+> 使用前必须配置好 NapCat：在 AstrBot 中创建并启用 `OneBot v11`（aiocqhttp）适配器，在 NapCat 的“网络配置”中启用 WebSockets 客户端并连接 `ws://<AstrBot主机>:6199/ws`。请确认 AstrBot 控制台出现“aiocqhttp(OneBot v11) 适配器已连接”，同时确保机器人具有群文件上传权限。
+
 ## 功能
 
 - 支持 `/jm 123456` 与 `/jm JM123456`
@@ -37,6 +40,19 @@ git clone https://github.com/CLRedfield/astrbot-plugin-jmdownloader.git
 
 ## 使用
 
+### 先配置 NapCat
+
+1. 在 AstrBot WebUI 的“机器人”页面创建 `OneBot v11` 适配器并启用；反向 WebSocket 端口默认为 `6199`。
+2. 在 NapCat WebUI 的“网络配置”中新建并启用 WebSockets 客户端。
+3. 本机部署时填写 `ws://127.0.0.1:6199/ws`；分离或 Docker 部署时将主机名换成 AstrBot 实际可达地址。
+4. 如果 NapCat 配置了 Token，AstrBot 的反向 WebSocket Token 必须保持一致。
+5. 在 AstrBot 控制台确认出现“aiocqhttp(OneBot v11) 适配器已连接”。
+6. 群聊使用时，确认机器人账号可以上传群文件。
+
+官方接入说明：[AstrBot OneBot v11 / NapCat 配置](https://docs.astrbot.app/platform/aiocqhttp.html)
+
+### 下载命令
+
 ```text
 /jm 123456
 /jm JM123456
@@ -68,6 +84,10 @@ git clone https://github.com/CLRedfield/astrbot-plugin-jmdownloader.git
 ### 群里只出现“📑”而没有 PDF
 
 通用 OneBot `file` 消息段在部分 NapCat 版本中只会显示文件占位符。本插件直接调用 `upload_group_file` 或 `upload_private_file`。若仍失败，请检查机器人是否有群文件上传权限。
+
+### 一直没有收到文件
+
+先检查 AstrBot 控制台是否显示 OneBot v11 适配器已经连接；然后检查 NapCat 的 WebSockets 客户端地址、启用状态和 Token。默认连接地址为 `ws://<AstrBot主机>:6199/ws`。
 
 ### 提示内容不存在或仅登录可见
 

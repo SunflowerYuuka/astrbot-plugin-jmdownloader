@@ -11,17 +11,15 @@ from pathlib import Path
 from typing import Any
 
 import jmcomic
+from astrbot.api import AstrBotConfig
+from astrbot.api.event import AstrMessageEvent, MessageChain, filter
+from astrbot.api.star import Context, Star, register
 from jmcomic import Feature
 from jmcomic.jm_exception import (
     MissingAlbumPhotoException,
     PartialDownloadFailedException,
     RequestRetryAllFailException,
 )
-
-from astrbot.api import AstrBotConfig
-from astrbot.api.event import AstrMessageEvent, MessageChain, filter
-from astrbot.api.star import Context, Star, register
-
 
 TEMP_ROOT = Path(tempfile.gettempdir()) / "astrbot_jmdownloader"
 ID_PATTERN = re.compile(r"\d{3,12}")
@@ -151,7 +149,7 @@ async def upload_pdf_to_qq(
     "jmdownloader",
     "CLRedfield",
     "使用 /jm <ID> 下载 JMComic 漫画并发送 PDF",
-    "1.0.2",
+    "1.0.3",
 )
 class JMDownloaderPlugin(Star):
     def __init__(
@@ -282,7 +280,9 @@ class JMDownloaderPlugin(Star):
                 )
             except PartialDownloadFailedException:
                 self.logger.exception("JMComic partial download failed: JM%s", album_id)
-                yield event.plain_result("部分图片下载失败，未发送不完整的 PDF，请稍后重试。")
+                yield event.plain_result(
+                    "部分图片下载失败，未发送不完整的 PDF，请稍后重试。"
+                )
             except Exception as exc:
                 self.logger.exception("JMComic download failed: JM%s", album_id)
                 yield event.plain_result(
