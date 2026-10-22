@@ -1,6 +1,6 @@
 # astrbot-plugin-jmdownloader
 
-一个用于 [AstrBot](https://github.com/AstrBotDevs/AstrBot) 的 JMComic PDF 下载插件。发送 `/jm <ID>` 后，插件会下载漫画图片、合成有效 PDF，并通过 NapCat/OneBot 作为真正的 QQ 群文件或私聊文件上传。当前版本为 `1.0.5`。
+一个用于 [AstrBot](https://github.com/AstrBotDevs/AstrBot) 的 JMComic PDF 下载插件。发送 `/jm <ID>` 后，插件会下载漫画图片、合成有效 PDF，并通过 NapCat/OneBot 作为真正的 QQ 群文件或私聊文件上传。当前版本为 `1.0.6`。
 
 > [!IMPORTANT]
 > 使用前必须配置好 NapCat：在 AstrBot 中创建并启用 `OneBot v11`（aiocqhttp）适配器，在 NapCat 的“网络配置”中启用 WebSockets 客户端并连接 `ws://<AstrBot主机>:6199/ws`。请确认 AstrBot 控制台出现“aiocqhttp(OneBot v11) 适配器已连接”，同时确保机器人具有群文件上传权限。
@@ -69,6 +69,7 @@ git clone https://github.com/SunflowerYuuka/astrbot-plugin-jmdownloader.git
 | `cookies` | 空 | 可选 Cookie，格式为 `k=v; k2=v2` |
 | `proxy` | 空 | 可选 HTTP/HTTPS 代理；留空沿用系统代理 |
 | `upload_file_mode` | `base64` | QQ 文件传输方式：`base64`（跨容器推荐）、`file_uri`（共享路径）或 `legacy`（旧版裸路径） |
+| `retry_without_title` | `true` | 标题文件名上传失败时，是否自动改用 `JM<ID>.pdf` 重试 |
 | `timeout` | `20` | 单次网络请求超时秒数 |
 | `retry_times` | `3` | 请求重试次数 |
 | `image_threads` | `16` | 单章节图片下载并发数 |
@@ -87,6 +88,8 @@ git clone https://github.com/SunflowerYuuka/astrbot-plugin-jmdownloader.git
 通用 OneBot `file` 消息段在部分 NapCat 版本中只会显示文件占位符。本插件直接调用 `upload_group_file` 或 `upload_private_file`。若仍失败，请检查机器人是否有群文件上传权限。
 
 默认的 `base64` 模式会通过 OneBot WebSocket 传输文件内容，AstrBot 与 NapCat 位于不同容器时也能工作。旧版 OneBot 可将 `upload_file_mode` 设置为 `legacy`；如果两边共享临时目录，也可以选择 `file_uri`，它会把本地路径转换为 `file:///...` URI。
+
+默认情况下，插件先使用 `JM<ID>-标题.pdf` 上传。如果 QQ 或 NapCat 因文件名中的标题拒绝上传，会自动重试为 `JM<ID>.pdf`。将 `retry_without_title` 关闭后，可以禁用这个兜底行为。
 
 ### 一直没有收到文件
 

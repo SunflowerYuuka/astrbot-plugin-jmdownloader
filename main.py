@@ -20,11 +20,11 @@ from jmcomic.jm_exception import (
     PartialDownloadFailedException,
     RequestRetryAllFailException,
 )
+from .filename import safe_pdf_name
 from .upload_uri import upload_file_value
 
 TEMP_ROOT = Path(tempfile.gettempdir()) / "astrbot_jmdownloader"
 ID_PATTERN = re.compile(r"\d{3,12}")
-INVALID_FILENAME_CHARS = re.compile(r'[\\/:*?"<>|\x00-\x1f]')
 
 
 def _config_int(
@@ -55,12 +55,6 @@ def normalize_album_id(raw: str) -> str | None:
     if candidate[:2].lower() == "jm":
         candidate = candidate[2:].strip()
     return candidate if ID_PATTERN.fullmatch(candidate) else None
-
-
-def safe_pdf_name(album_id: str, title: str) -> str:
-    cleaned = INVALID_FILENAME_CHARS.sub("_", str(title)).strip(" ._")
-    cleaned = re.sub(r"\s+", " ", cleaned)[:70]
-    return f"JM{album_id}-{cleaned}.pdf" if cleaned else f"JM{album_id}.pdf"
 
 
 def build_option(
@@ -152,7 +146,7 @@ async def upload_pdf_to_qq(
     "jmdownloader",
     "CLRedfield",
     "使用 /jm <ID> 下载 JMComic 漫画并发送 PDF",
-    "1.0.4",
+    "1.0.6",
 )
 class JMDownloaderPlugin(Star):
     def __init__(
@@ -245,6 +239,9 @@ class JMDownloaderPlugin(Star):
                 )
 
                 pdf_name = safe_pdf_name(resolved_id, str(album.name))
+                retry_without_title = bool(
+                    self.config.get("retry_without_title", True),
+                )
                 try:
                     upload_file_mode = str(
                         self.config.get("upload_file_mode", "base64") or "base64",
@@ -255,17 +252,49 @@ class JMDownloaderPlugin(Star):
                         pdf_name,
                         upload_file_mode,
                     )
-                except Exception:
-                    self.logger.exception(
-                        "QQ PDF upload failed: JM%s, %s",
+                except Exception as first_upload_error:
+                    if not retry_without_title:
+                        self.logger.exception(
+                            "QQ PDF upload failed: JM%s, %s",
+                            resolved_id,
+                            pdf_path,
+                        )
+                        yield event.plain_result(
+                            f"JM{resolved_id} 已生成 PDF，但 QQ 文件上传失败。"
+                            "请检查机器人是否有群文件上传权限；详细原因已写入 AstrBot 日志。",
+                        )
+                        return
+
+                    fallback_name = safe_pdf_name(
                         resolved_id,
-                        pdf_path,
+                        str(album.name),
+                        include_title=False,
                     )
-                    yield event.plain_result(
-                        f"JM{resolved_id} 已生成 PDF，但 QQ 文件上传失败。"
-                        "请检查机器人是否有群文件上传权限；详细原因已写入 AstrBot 日志。",
+                    self.logger.warning(
+                        "QQ PDF upload with title failed for JM%s; retrying as %s: %s",
+                        resolved_id,
+                        fallback_name,
+                        first_upload_error,
                     )
-                    return
+                    try:
+                        upload_result = await upload_pdf_to_qq(
+                            event,
+                            pdf_path,
+                            fallback_name,
+                            upload_file_mode,
+                        )
+                        pdf_name = fallback_name
+                    except Exception:
+                        self.logger.exception(
+                            "QQ PDF upload failed with and without title: JM%s, %s",
+                            resolved_id,
+                            pdf_path,
+                        )
+                        yield event.plain_result(
+                            f"JM{resolved_id} 已生成 PDF，但 QQ 文件上传失败。"
+                            "请检查机器人是否有群文件上传权限；详细原因已写入 AstrBot 日志。",
+                        )
+                        return
 
                 self.logger.info(
                     "QQ PDF upload completed: JM%s, result=%r",
