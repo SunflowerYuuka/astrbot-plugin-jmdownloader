@@ -20,7 +20,7 @@ from jmcomic.jm_exception import (
     PartialDownloadFailedException,
     RequestRetryAllFailException,
 )
-from upload_uri import upload_file_value
+from .upload_uri import upload_file_value
 
 TEMP_ROOT = Path(tempfile.gettempdir()) / "astrbot_jmdownloader"
 ID_PATTERN = re.compile(r"\d{3,12}")
