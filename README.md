@@ -27,13 +27,13 @@
 在 AstrBot 插件管理页选择“从 GitHub 安装”，填入：
 
 ```text
-https://github.com/SunflowerYuuka/astrbot-plugin-jmdownloader/tree/fix/upload-file-uri
+https://github.com/SunflowerYuuka/astrbot-plugin-jmdownloader
 ```
 
 也可以将仓库克隆到 AstrBot 的 `data/plugins/` 目录：
 
 ```bash
-git clone --branch fix/upload-file-uri https://github.com/SunflowerYuuka/astrbot-plugin-jmdownloader.git
+git clone https://github.com/SunflowerYuuka/astrbot-plugin-jmdownloader.git
 ```
 
 安装后重载插件或重启 AstrBot。AstrBot 会根据 `requirements.txt` 安装 `jmcomic` 和 `img2pdf`。

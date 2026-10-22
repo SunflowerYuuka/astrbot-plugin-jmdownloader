@@ -8,7 +8,7 @@ desc: |
 help: 发送 /jm 123456；也支持 /jm JM123456。下载完成后机器人会直接发送 PDF 文件。
 version: 1.0.4
 author: CLRedfield
-repo: https://github.com/SunflowerYuuka/astrbot-plugin-jmdownloader/tree/fix/upload-file-uri
+repo: https://github.com/SunflowerYuuka/astrbot-plugin-jmdownloader
 social_link: https://github.com/SunflowerYuuka
 astrbot_version: ">=4.27.1,<5"
 support_platforms:
