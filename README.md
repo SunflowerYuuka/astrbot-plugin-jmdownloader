@@ -1,6 +1,6 @@
 # astrbot-plugin-jmdownloader
 
-一个用于 [AstrBot](https://github.com/AstrBotDevs/AstrBot) 的 JMComic PDF 下载插件。发送 `/jm <ID>` 后，插件会下载漫画图片、合成有效 PDF，并通过 NapCat/OneBot 作为真正的 QQ 群文件或私聊文件上传。
+一个用于 [AstrBot](https://github.com/AstrBotDevs/AstrBot) 的 JMComic PDF 下载插件。发送 `/jm <ID>` 后，插件会下载漫画图片、合成有效 PDF，并通过 NapCat/OneBot 作为真正的 QQ 群文件或私聊文件上传。当前版本为 `1.0.4`。
 
 > [!IMPORTANT]
 > 使用前必须配置好 NapCat：在 AstrBot 中创建并启用 `OneBot v11`（aiocqhttp）适配器，在 NapCat 的“网络配置”中启用 WebSockets 客户端并连接 `ws://<AstrBot主机>:6199/ws`。请确认 AstrBot 控制台出现“aiocqhttp(OneBot v11) 适配器已连接”，同时确保机器人具有群文件上传权限。
@@ -27,13 +27,13 @@
 在 AstrBot 插件管理页选择“从 GitHub 安装”，填入：
 
 ```text
-https://github.com/CLRedfield/astrbot-plugin-jmdownloader
+https://github.com/SunflowerYuuka/astrbot-plugin-jmdownloader/tree/fix/upload-file-uri
 ```
 
 也可以将仓库克隆到 AstrBot 的 `data/plugins/` 目录：
 
 ```bash
-git clone https://github.com/CLRedfield/astrbot-plugin-jmdownloader.git
+git clone --branch fix/upload-file-uri https://github.com/SunflowerYuuka/astrbot-plugin-jmdownloader.git
 ```
 
 安装后重载插件或重启 AstrBot。AstrBot 会根据 `requirements.txt` 安装 `jmcomic` 和 `img2pdf`。
