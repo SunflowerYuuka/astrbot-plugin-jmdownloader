@@ -21,6 +21,7 @@ from jmcomic.jm_exception import (
     RequestRetryAllFailException,
 )
 from .filename import safe_pdf_name
+from .group_access import group_access_allowed
 from .pdf_security import encrypt_pdf
 from .upload_uri import upload_file_value
 
@@ -147,7 +148,7 @@ async def upload_pdf_to_qq(
     "jmdownloader",
     "CLRedfield",
     "使用 /jm <ID> 下载 JMComic 漫画并发送 PDF",
-    "1.0.7",
+    "1.0.8",
 )
 class JMDownloaderPlugin(Star):
     def __init__(
@@ -190,6 +191,16 @@ class JMDownloaderPlugin(Star):
 
         if event.get_group_id() and not self.config.get("allow_group", True):
             yield event.plain_result("JM 下载当前仅允许在私聊中使用。")
+            return
+
+        group_id = event.get_group_id()
+        if group_id and not group_access_allowed(
+            self.config.get("group_access_mode", "disabled"),
+            group_id,
+            self.config.get("group_whitelist", []),
+            self.config.get("group_blacklist", []),
+        ):
+            yield event.plain_result("当前群聊不在 JM 下载允许范围内。")
             return
 
         if self.download_semaphore.locked():

@@ -66,6 +66,9 @@ git clone https://github.com/SunflowerYuuka/astrbot-plugin-jmdownloader.git
 | --- | ---: | --- |
 | `enabled` | `true` | 是否启用插件 |
 | `allow_group` | `true` | 是否允许群聊使用 `/jm` |
+| `group_access_mode` | `disabled` | 群聊名单模式：`disabled`、`whitelist` 或 `blacklist` |
+| `group_whitelist` | `[]` | 白名单群号列表，仅在 `whitelist` 模式生效 |
+| `group_blacklist` | `[]` | 黑名单群号列表，仅在 `blacklist` 模式生效 |
 | `cookies` | 空 | 可选 Cookie，格式为 `k=v; k2=v2` |
 | `proxy` | 空 | 可选 HTTP/HTTPS 代理；留空沿用系统代理 |
 | `upload_file_mode` | `base64` | QQ 文件传输方式：`base64`（跨容器推荐）、`file_uri`（共享路径）或 `legacy`（旧版裸路径） |

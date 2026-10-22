@@ -9,6 +9,30 @@
     "default": true,
     "description": "允许在群聊中使用 /jm"
   },
+  "group_access_mode": {
+    "type": "string",
+    "default": "disabled",
+    "description": "群聊名单限制模式",
+    "options": ["disabled", "whitelist", "blacklist"],
+    "labels": ["不启用名单限制", "白名单", "黑名单"],
+    "subtitles": ["所有允许群聊均可使用", "仅名单内群聊可使用", "名单内群聊禁止使用"]
+  },
+  "group_whitelist": {
+    "type": "list",
+    "default": [],
+    "description": "允许使用 /jm 的群号列表",
+    "items": {
+      "type": "string"
+    }
+  },
+  "group_blacklist": {
+    "type": "list",
+    "default": [],
+    "description": "禁止使用 /jm 的群号列表",
+    "items": {
+      "type": "string"
+    }
+  },
   "cookies": {
     "type": "string",
     "default": "",
