@@ -68,6 +68,7 @@ git clone https://github.com/CLRedfield/astrbot-plugin-jmdownloader.git
 | `allow_group` | `true` | 是否允许群聊使用 `/jm` |
 | `cookies` | 空 | 可选 Cookie，格式为 `k=v; k2=v2` |
 | `proxy` | 空 | 可选 HTTP/HTTPS 代理；留空沿用系统代理 |
+| `upload_file_mode` | `file_uri` | 文件上传路径格式：`file_uri`（推荐）或 `legacy`（旧版裸路径） |
 | `timeout` | `20` | 单次网络请求超时秒数 |
 | `retry_times` | `3` | 请求重试次数 |
 | `image_threads` | `16` | 单章节图片下载并发数 |
@@ -84,6 +85,8 @@ git clone https://github.com/CLRedfield/astrbot-plugin-jmdownloader.git
 ### 群里只出现“📑”而没有 PDF
 
 通用 OneBot `file` 消息段在部分 NapCat 版本中只会显示文件占位符。本插件直接调用 `upload_group_file` 或 `upload_private_file`。若仍失败，请检查机器人是否有群文件上传权限。
+
+如果使用旧版 OneBot 实现，可将 `upload_file_mode` 设置为 `legacy`。NapCat 建议使用默认的 `file_uri`，它会把本地路径转换为 `file:///...` URI。
 
 ### 一直没有收到文件
 

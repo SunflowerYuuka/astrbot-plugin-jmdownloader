@@ -20,6 +20,7 @@ from jmcomic.jm_exception import (
     PartialDownloadFailedException,
     RequestRetryAllFailException,
 )
+from upload_uri import upload_file_value
 
 TEMP_ROOT = Path(tempfile.gettempdir()) / "astrbot_jmdownloader"
 ID_PATTERN = re.compile(r"\d{3,12}")
@@ -127,20 +128,22 @@ async def upload_pdf_to_qq(
     event: AstrMessageEvent,
     pdf_path: Path,
     file_name: str,
+    upload_file_mode: str = "file_uri",
 ) -> object:
     """Upload a real QQ file through NapCat's OneBot actions."""
+    file_value = upload_file_value(pdf_path, upload_file_mode)
     group_id = event.get_group_id()
     if group_id:
         return await event.bot.api.call_action(
             "upload_group_file",
             group_id=int(group_id),
-            file=str(pdf_path.resolve()),
+            file=file_value,
             name=file_name,
         )
     return await event.bot.api.call_action(
         "upload_private_file",
         user_id=int(event.get_sender_id()),
-        file=str(pdf_path.resolve()),
+        file=file_value,
         name=file_name,
     )
 
@@ -243,10 +246,14 @@ class JMDownloaderPlugin(Star):
 
                 pdf_name = safe_pdf_name(resolved_id, str(album.name))
                 try:
+                    upload_file_mode = str(
+                        self.config.get("upload_file_mode", "file_uri") or "file_uri",
+                    ).strip().lower()
                     upload_result = await upload_pdf_to_qq(
                         event,
                         pdf_path,
                         pdf_name,
+                        upload_file_mode,
                     )
                 except Exception:
                     self.logger.exception(

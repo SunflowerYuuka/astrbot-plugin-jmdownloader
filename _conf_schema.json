@@ -19,6 +19,11 @@
     "default": "",
     "description": "可选代理，例如 http://127.0.0.1:7890；留空时沿用系统代理"
   },
+  "upload_file_mode": {
+    "type": "string",
+    "default": "file_uri",
+    "description": "QQ 文件上传路径格式：file_uri（推荐）或 legacy（兼容旧版）"
+  },
   "timeout": {
     "type": "int",
     "default": 20,
