@@ -70,6 +70,7 @@ git clone https://github.com/SunflowerYuuka/astrbot-plugin-jmdownloader.git
 | `proxy` | 空 | 可选 HTTP/HTTPS 代理；留空沿用系统代理 |
 | `upload_file_mode` | `base64` | QQ 文件传输方式：`base64`（跨容器推荐）、`file_uri`（共享路径）或 `legacy`（旧版裸路径） |
 | `retry_without_title` | `true` | 标题文件名上传失败时，是否自动改用 `JM<ID>.pdf` 重试 |
+| `pdf_password_enabled` | `false` | 是否给 PDF 加密；开启后密码为纯数字 JM ID，例如 `1465788` |
 | `timeout` | `20` | 单次网络请求超时秒数 |
 | `retry_times` | `3` | 请求重试次数 |
 | `image_threads` | `16` | 单章节图片下载并发数 |

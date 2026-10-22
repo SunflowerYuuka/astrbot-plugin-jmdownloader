@@ -21,6 +21,7 @@ from jmcomic.jm_exception import (
     RequestRetryAllFailException,
 )
 from .filename import safe_pdf_name
+from .pdf_security import encrypt_pdf
 from .upload_uri import upload_file_value
 
 TEMP_ROOT = Path(tempfile.gettempdir()) / "astrbot_jmdownloader"
@@ -146,7 +147,7 @@ async def upload_pdf_to_qq(
     "jmdownloader",
     "CLRedfield",
     "使用 /jm <ID> 下载 JMComic 漫画并发送 PDF",
-    "1.0.6",
+    "1.0.7",
 )
 class JMDownloaderPlugin(Star):
     def __init__(
@@ -230,6 +231,11 @@ class JMDownloaderPlugin(Star):
                 resolved_id = str(album.id)
                 pdf_path = find_generated_pdf(pdf_dir, resolved_id)
                 validate_pdf(pdf_path)
+                if self.config.get("pdf_password_enabled", False):
+                    protected_pdf_path = pdf_dir / f"{resolved_id}-protected.pdf"
+                    encrypt_pdf(pdf_path, protected_pdf_path, resolved_id)
+                    validate_pdf(protected_pdf_path)
+                    pdf_path = protected_pdf_path
                 file_size_mb = pdf_path.stat().st_size / (1024 * 1024)
                 self.logger.info(
                     "JMComic PDF ready: JM%s, %.2f MiB, %s",

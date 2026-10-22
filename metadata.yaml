@@ -7,7 +7,7 @@ desc: |
 
   使用前请先配置 AstrBot 的 OneBot v11（aiocqhttp）适配器，并在 NapCat 中启用 WebSockets 客户端、连接 AstrBot 的反向 WebSocket 地址（默认 ws://<AstrBot主机>:6199/ws）。请确认 AstrBot 控制台显示适配器已连接，并确保机器人具有群文件上传权限。
 help: 发送 /jm 123456；也支持 /jm JM123456。下载完成后机器人会直接发送 PDF 文件。
-version: 1.0.6
+version: 1.0.7
 author: CLRedfield
 repo: https://github.com/SunflowerYuuka/astrbot-plugin-jmdownloader
 social_link: https://github.com/SunflowerYuuka

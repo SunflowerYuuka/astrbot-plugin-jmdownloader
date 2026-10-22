@@ -32,6 +32,11 @@
     "default": true,
     "description": "文件名带标题上传失败时，自动重试为仅包含 JM 编号的文件名"
   },
+  "pdf_password_enabled": {
+    "type": "bool",
+    "default": false,
+    "description": "给生成的 PDF 加密，密码为纯数字 JM ID"
+  },
   "timeout": {
     "type": "int",
     "default": 20,
