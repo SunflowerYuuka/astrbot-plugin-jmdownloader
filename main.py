@@ -128,7 +128,7 @@ async def upload_pdf_to_qq(
     event: AstrMessageEvent,
     pdf_path: Path,
     file_name: str,
-    upload_file_mode: str = "file_uri",
+    upload_file_mode: str = "base64",
 ) -> object:
     """Upload a real QQ file through NapCat's OneBot actions."""
     file_value = upload_file_value(pdf_path, upload_file_mode)
@@ -247,7 +247,7 @@ class JMDownloaderPlugin(Star):
                 pdf_name = safe_pdf_name(resolved_id, str(album.name))
                 try:
                     upload_file_mode = str(
-                        self.config.get("upload_file_mode", "file_uri") or "file_uri",
+                        self.config.get("upload_file_mode", "base64") or "base64",
                     ).strip().lower()
                     upload_result = await upload_pdf_to_qq(
                         event,

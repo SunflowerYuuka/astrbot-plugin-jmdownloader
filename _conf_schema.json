@@ -21,8 +21,11 @@
   },
   "upload_file_mode": {
     "type": "string",
-    "default": "file_uri",
-    "description": "QQ 文件上传路径格式：file_uri（推荐）或 legacy（兼容旧版）"
+    "default": "base64",
+    "description": "QQ 文件传输方式",
+    "options": ["base64", "file_uri", "legacy"],
+    "labels": ["Base64 跨容器传输（推荐）", "file:/// URI（需共享路径）", "旧版裸路径（需共享路径）"],
+    "subtitles": ["通过 WebSocket 传输，AstrBot 与 NapCat 不需要共享文件目录", "NapCat 必须能访问 AstrBot 生成的文件路径", "兼容旧版 OneBot，NapCat 必须能访问 AstrBot 生成的文件路径"]
   },
   "timeout": {
     "type": "int",

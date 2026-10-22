@@ -1,5 +1,7 @@
 import unittest
 import ast
+import base64
+import tempfile
 from pathlib import Path
 
 from upload_uri import upload_file_value
@@ -34,6 +36,16 @@ class UploadUriTests(unittest.TestCase):
             upload_file_value(pdf_path, "legacy"),
             str(pdf_path.resolve()),
         )
+
+    def test_encodes_file_for_cross_container_upload(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            pdf_path = Path(temp_dir) / "1465788.pdf"
+            pdf_path.write_bytes(b"%PDF-test")
+
+            self.assertEqual(
+                upload_file_value(pdf_path, "base64"),
+                "base64://" + base64.b64encode(b"%PDF-test").decode("ascii"),
+            )
 
 
 if __name__ == "__main__":
