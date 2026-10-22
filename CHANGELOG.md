@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.4 - 2026-10-22
+
+- 默认使用 `file:///...` URI 上传 QQ 文件，兼容 NapCat 对本地文件参数的解析。
+- 增加 `upload_file_mode` 配置，可切换 `file_uri` 和旧版 `legacy` 上传格式。
+
 ## 1.0.3 - 2026-08-10
 
 - 补充 AstrBot 插件市场所需的仓库与作者元数据。

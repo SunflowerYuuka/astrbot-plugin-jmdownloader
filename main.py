@@ -152,7 +152,7 @@ async def upload_pdf_to_qq(
     "jmdownloader",
     "CLRedfield",
     "使用 /jm <ID> 下载 JMComic 漫画并发送 PDF",
-    "1.0.3",
+    "1.0.4",
 )
 class JMDownloaderPlugin(Star):
     def __init__(
